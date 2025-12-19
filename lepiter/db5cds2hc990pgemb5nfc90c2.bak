@@ -247,7 +247,7 @@
 					"__type" : "time",
 					"time" : {
 						"__type" : "dateAndTime",
-						"dateAndTimeString" : "2024-03-14T10:30:35.735071+01:00"
+						"dateAndTimeString" : "2024-03-14T10:30:50.252639+01:00"
 					}
 				},
 				"uid" : {
@@ -257,7 +257,7 @@
 				"paragraphStyle" : {
 					"__type" : "textStyle"
 				},
-				"string" : "This is still an open issue"
+				"string" : "This is still an open issue as of writing this."
 			}
 		]
 	},

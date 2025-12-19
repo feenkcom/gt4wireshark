@@ -1,14 +1,15 @@
 Class {
-	#name : #GtRrMsgPackMessage,
-	#superclass : #Object,
+	#name : 'GtRrMsgPackMessage',
+	#superclass : 'Object',
 	#instVars : [
 		'rawData',
 		'sourceRange'
 	],
-	#category : #'GToolkit-Wireshark'
+	#category : 'GToolkit-Wireshark',
+	#package : 'GToolkit-Wireshark'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRrMsgPackMessage >> bindings [
 	| src bindings |
 
@@ -21,13 +22,13 @@ GtRrMsgPackMessage >> bindings [
 	^ bindings.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRrMsgPackMessage >> commandId [
 
 	^ rawData at: 'commandId' ifAbsent: [ nil ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRrMsgPackMessage >> gtBindingsFor: aView [
 	<gtView>
 	
@@ -39,7 +40,7 @@ GtRrMsgPackMessage >> gtBindingsFor: aView [
 		view: #gtLiveFor:
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRrMsgPackMessage >> gtRawDataFor: aView [
 	<gtView>
 
@@ -50,7 +51,7 @@ GtRrMsgPackMessage >> gtRawDataFor: aView [
 		view: #gtLiveFor:
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRrMsgPackMessage >> gtStatementsFor: aView [
 	<gtView>
 	
@@ -61,13 +62,13 @@ GtRrMsgPackMessage >> gtStatementsFor: aView [
 		text: [ self statements ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRrMsgPackMessage >> id [
 
 	^ rawData at: 'id' ifAbsent: [ nil ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRrMsgPackMessage >> printOn: aStream [
 
 	self commandId ifNil: [ ^ super printOn: aStream ].
@@ -76,17 +77,17 @@ GtRrMsgPackMessage >> printOn: aStream [
 		<< self commandId.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRrMsgPackMessage >> rawData [
 	^ rawData
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRrMsgPackMessage >> rawData: anObject [
 	rawData := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRrMsgPackMessage >> sourceRange [
 	"Answer the range of bytes from the wireshark dump that contain the receiver"
 	<return: #Interval>
@@ -94,25 +95,25 @@ GtRrMsgPackMessage >> sourceRange [
 	^ sourceRange
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRrMsgPackMessage >> sourceRange: anInterval [
 
 	sourceRange := anInterval
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRrMsgPackMessage >> statements [
 
 	^ rawData at: 'statements' ifAbsent: [ nil ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRrMsgPackMessage >> type [
 
 	^ rawData at: 'type'
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtRrMsgPackMessage >> value [
 	| data |
 

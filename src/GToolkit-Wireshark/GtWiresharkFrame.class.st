@@ -1,10 +1,11 @@
 Class {
-	#name : #GtWiresharkFrame,
-	#superclass : #GtWiresharkObject,
-	#category : #'GToolkit-Wireshark'
+	#name : 'GtWiresharkFrame',
+	#superclass : 'GtWiresharkObject',
+	#category : 'GToolkit-Wireshark',
+	#package : 'GToolkit-Wireshark'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkFrame >> timeUtc [
 
 	^ DateAndTime readFrom: (((rawData at: 'frame.time_utc') allButLast: 4), '+00:00') readStream

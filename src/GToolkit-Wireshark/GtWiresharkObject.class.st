@@ -1,13 +1,14 @@
 Class {
-	#name : #GtWiresharkObject,
-	#superclass : #Object,
+	#name : 'GtWiresharkObject',
+	#superclass : 'Object',
 	#instVars : [
 		'rawData'
 	],
-	#category : #'GToolkit-Wireshark'
+	#category : 'GToolkit-Wireshark',
+	#package : 'GToolkit-Wireshark'
 }
 
-{ #category : #ui }
+{ #category : 'ui' }
 GtWiresharkObject >> gtRawDataFor: aView [
 	<gtView>
 
@@ -18,12 +19,12 @@ GtWiresharkObject >> gtRawDataFor: aView [
 		view: #gtLiveFor:
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkObject >> rawData [
 	^ rawData
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkObject >> rawData: anObject [
 	rawData := anObject
 ]

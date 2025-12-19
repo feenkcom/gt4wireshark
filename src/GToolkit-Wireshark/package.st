@@ -1,1 +1,1 @@
-Package { #name : #'GToolkit-Wireshark' }
+Package { #name : 'GToolkit-Wireshark' }

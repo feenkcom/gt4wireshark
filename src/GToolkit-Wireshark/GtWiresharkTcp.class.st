@@ -1,34 +1,36 @@
 Class {
-	#name : #GtWiresharkTcp,
-	#superclass : #GtWiresharkObject,
-	#category : #'GToolkit-Wireshark'
+	#name : 'GtWiresharkTcp',
+	#superclass : 'GtWiresharkObject',
+	#category : 'GToolkit-Wireshark',
+	#package : 'GToolkit-Wireshark'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkTcp >> dstport [
 
 	^ (rawData at: 'tcp.dstport') asNumber
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkTcp >> payload [
 
 	^ ByteArray readHexFrom: ((rawData at: #'tcp.payload') copyReplaceAll: ':' with: '')
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkTcp >> payloadAscii [
 
 	^ self payload asString
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkTcp >> payloadMsgPack [
 
-	^ MpDecoder decode: self payload
+	^ GtWiresharkMsgPackPayload new
+		rawData: (MpDecoder decode: self payload)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkTcp >> payloadSize [
 
 	^ [ self payload size ]
@@ -36,7 +38,7 @@ GtWiresharkTcp >> payloadSize [
 		do: [ :ex | 0 ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkTcp >> srcport [
 
 	^ (rawData at: 'tcp.srcport') asNumber

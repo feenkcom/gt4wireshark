@@ -1,20 +1,27 @@
 Class {
-	#name : #GtWiresharkDissectedPacket,
-	#superclass : #GtWiresharkObject,
+	#name : 'GtWiresharkDissectedPacket',
+	#superclass : 'GtWiresharkObject',
 	#instVars : [
 		'parent',
 		'index'
 	],
-	#category : #'GToolkit-Wireshark'
+	#category : 'GToolkit-Wireshark',
+	#package : 'GToolkit-Wireshark'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
+GtWiresharkDissectedPacket >> dstPort [
+
+	^ self tcp dstport
+]
+
+{ #category : 'accessing' }
 GtWiresharkDissectedPacket >> frame [
 
 	^ self layers frame
 ]
 
-{ #category : #accessing }
+{ #category : 'ui' }
 GtWiresharkDissectedPacket >> gtPayloadAsciiFor: aView [
 	<gtView>
 	
@@ -25,7 +32,7 @@ GtWiresharkDissectedPacket >> gtPayloadAsciiFor: aView [
 		text: [ self payloadAscii ]
 ]
 
-{ #category : #accessing }
+{ #category : 'ui' }
 GtWiresharkDissectedPacket >> gtPayloadFor: aView [
 	<gtView>
 	
@@ -37,7 +44,7 @@ GtWiresharkDissectedPacket >> gtPayloadFor: aView [
 		view: #gtHexDumpFor:
 ]
 
-{ #category : #accessing }
+{ #category : 'ui' }
 GtWiresharkDissectedPacket >> gtPayloadMsgPackFor: aView [
 	<gtView>
 	
@@ -45,11 +52,23 @@ GtWiresharkDissectedPacket >> gtPayloadMsgPackFor: aView [
 	^ aView forward
 		title: 'Payload (MsgPack)';
 		priority: 20;
-		object: [ self payloadMsgPack ];
+		object: [ self payloadMsgPack rawData ];
 		view: #gtLiveFor:
 ]
 
-{ #category : #ui }
+{ #category : 'ui' }
+GtWiresharkDissectedPacket >> gtStatementsFor: aView [
+	<gtView>
+
+	(self payloadMsgPack rawData includesKey: 'value') ifFalse: [ ^ aView empty ].
+	^ aView forward
+		title: 'Payload Value';
+		priority: 30;
+		object: [ self payloadMsgPack ];
+		view: #gtDecodedValueFor:
+]
+
+{ #category : 'ui' }
 GtWiresharkDissectedPacket >> gtSummaryFor: aView [
 	<gtView>
 	^ aView columnedList
@@ -62,45 +81,51 @@ GtWiresharkDissectedPacket >> gtSummaryFor: aView [
 		actionUpdateButton
 ]
 
-{ #category : #accessing }
+{ #category : 'testing' }
+GtWiresharkDissectedPacket >> hasPayload [
+
+	^ self tcp rawData includesKey: 'tcp.payload'
+]
+
+{ #category : 'accessing' }
 GtWiresharkDissectedPacket >> index [
 	^ index
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkDissectedPacket >> index: anObject [
 	index := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkDissectedPacket >> ip [
 
 	^ self layers ip
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkDissectedPacket >> ipAddress [
 
 	^ self ip ipAddress
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkDissectedPacket >> layers [
 
 	^ GtWiresharkPacketLayers new rawData: ((rawData at: #_source) at: #layers)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkDissectedPacket >> parent [
 	^ parent
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkDissectedPacket >> parent: anObject [
 	parent := anObject
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkDissectedPacket >> payload [
 
 	^ [ self tcp payload ]
@@ -108,7 +133,7 @@ GtWiresharkDissectedPacket >> payload [
 		do: [ :ex | nil ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkDissectedPacket >> payloadAscii [
 
 	^ [ self tcp payloadAscii ]
@@ -116,7 +141,7 @@ GtWiresharkDissectedPacket >> payloadAscii [
 		do: [ :ex | nil ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkDissectedPacket >> payloadMsgPack [
 
 	^ [ self tcp payloadMsgPack ]
@@ -124,13 +149,13 @@ GtWiresharkDissectedPacket >> payloadMsgPack [
 		do: [ :ex | nil ]
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkDissectedPacket >> payloadSize [
 
 	^ self tcp payloadSize
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkDissectedPacket >> printOn: aStream [
 	| time |
 
@@ -146,26 +171,36 @@ GtWiresharkDissectedPacket >> printOn: aStream [
 	aStream print: time.
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkDissectedPacket >> srcHost [
 
 	^ self ip srcHost
 ]
 
-{ #category : #ui }
+{ #category : 'accessing' }
+GtWiresharkDissectedPacket >> srcPort [
+
+	^ self tcp srcport
+]
+
+{ #category : 'ui' }
 GtWiresharkDissectedPacket >> summaryAttributes [
 	| attrs |
 
 	attrs := OrderedCollection new.
 	self ipAddress ifNotNil: [ :v |
 		attrs add: { 'Destination IP address'. v. self ip. } ].
+	self dstPort ifNotNil: [ :v |
+		attrs add: { 'Destination Port'. v. self tcp. } ].
 	self srcHost ifNotNil: [ :v |
 		attrs add: { 'Source IP Address'. v. self ip. } ].
+	self srcPort ifNotNil: [ :v |
+		attrs add: { 'Source Port'. v. self tcp. } ].
 	attrs add: { 'Payload size'. self payloadSize. self tcp. }.
 	^ attrs
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkDissectedPacket >> tcp [
 
 	^ self layers tcp

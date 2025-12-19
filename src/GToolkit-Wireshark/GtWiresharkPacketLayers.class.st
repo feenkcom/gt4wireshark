@@ -1,22 +1,23 @@
 Class {
-	#name : #GtWiresharkPacketLayers,
-	#superclass : #GtWiresharkObject,
-	#category : #'GToolkit-Wireshark'
+	#name : 'GtWiresharkPacketLayers',
+	#superclass : 'GtWiresharkObject',
+	#category : 'GToolkit-Wireshark',
+	#package : 'GToolkit-Wireshark'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkPacketLayers >> frame [
 
 	^ GtWiresharkFrame new rawData: (rawData at: #frame)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkPacketLayers >> ip [
 
 	^ GtWiresharkIp new rawData: (rawData at: #ip)
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkPacketLayers >> tcp [
 
 	^ GtWiresharkTcp new rawData: (rawData at: #tcp)

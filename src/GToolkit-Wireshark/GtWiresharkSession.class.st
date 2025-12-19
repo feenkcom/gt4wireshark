@@ -1,14 +1,15 @@
 Class {
-	#name : #GtWiresharkSession,
-	#superclass : #Object,
+	#name : 'GtWiresharkSession',
+	#superclass : 'Object',
 	#instVars : [
 		'allPackets',
 		'wiresharkFile'
 	],
-	#category : #'GToolkit-Wireshark'
+	#category : 'GToolkit-Wireshark',
+	#package : 'GToolkit-Wireshark'
 }
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkSession >> gtPacketsFor: aView [
 	<gtView>
 
@@ -20,7 +21,13 @@ GtWiresharkSession >> gtPacketsFor: aView [
 		view: #gtItemsFor:
 ]
 
-{ #category : #private }
+{ #category : 'initialization' }
+GtWiresharkSession >> initializeWithPackets: aCollection [
+
+	allPackets := aCollection
+]
+
+{ #category : 'private' }
 GtWiresharkSession >> load [
 	| jsonObject |
 
@@ -34,12 +41,32 @@ GtWiresharkSession >> load [
 					rawData: each ].
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
+GtWiresharkSession >> packets [
+
+	^ allPackets ifNil: [ self load. allPackets ]
+]
+
+{ #category : 'accessing' }
+GtWiresharkSession >> select: aBlock [
+
+	^ self class new initializeWithPackets:
+		(allPackets select: aBlock)
+]
+
+{ #category : 'selecting' }
+GtWiresharkSession >> selectWithPort: anInteger [
+
+	^ self select: [ :aPacket |
+		aPacket srcPort = anInteger or: [ aPacket dstPort = anInteger ] ]
+]
+
+{ #category : 'accessing' }
 GtWiresharkSession >> wiresharkFile [
 	^ wiresharkFile
 ]
 
-{ #category : #accessing }
+{ #category : 'accessing' }
 GtWiresharkSession >> wiresharkFile: anObject [
 	wiresharkFile := anObject
 ]
